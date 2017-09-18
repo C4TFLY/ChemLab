@@ -591,7 +591,7 @@ PlayerSettings:
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
   cloudProjectId: 31275c0e-2384-455b-8df4-116d2a487b29
-  projectName: ChemLab (1)
+  projectName: ChemLab
   organizationId: c4t-fly
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
