@@ -8,21 +8,19 @@ public class CameraMovement : MonoBehaviour {
     private float horAxis;
     private float verAxis;
     private float yLim, xLim;
-   
-    Vector3 newPosition;
+    private Vector3 newPosition;
 
     public Transform topWall, rightWall;
-
+    public float camSpeed = 1;
 
     private void Start()
     {
+        //Lock newPosition Z value
         newPosition.z = transform.position.z;
 
         //Setup for camera limitations;
-        yLim = topWall.position.y;
-        xLim = rightWall.position.x;
-        Debug.Log(yLim);
-        Debug.Log(xLim);
+        yLim = topWall.position.y - (topWall.localScale.x / 2);
+        xLim = rightWall.position.x - (topWall.localScale.x / 2);
     }
 
     void Update () {
@@ -35,10 +33,12 @@ public class CameraMovement : MonoBehaviour {
         newPosition.x += horAxis;
         newPosition.y += verAxis;
 
+        //Lerp to the new position
+        //TODO: Test whether camspeed actually has an effect
         transform.position = Vector3.Lerp(
             transform.position, 
             newPosition,
-            0.25f);
+            0.25f * camSpeed);
 
         #endregion
 
@@ -47,19 +47,21 @@ public class CameraMovement : MonoBehaviour {
 
     private void LateUpdate()
     {
+        //Get the camera's orthographic size and aspect ratio
         float camSize = Camera.main.orthographicSize;
-        float aspectRatio = Screen.width / Screen.height;
+        float aspectRatio = Screen.width / (float)Screen.height;
 
-        float maxY = xLim - camSize;
+        //Assign the limit of the camera's movement
+        float maxY = yLim - camSize;
         float minY = maxY * -1;
-
-        float maxX = yLim - (camSize * aspectRatio);
+        float maxX = xLim - (camSize * aspectRatio);
         float minX = maxX * -1;
 
-        Vector3 v3 = newPosition;
-        v3.x = Mathf.Clamp(v3.x, minX, maxX);
-        v3.y = Mathf.Clamp(v3.y, minY, maxY);
+        //Clamp the newPosition vector to the limits
+        Vector3 clampVector = newPosition;
+        clampVector.x = Mathf.Clamp(clampVector.x, minX, maxX);
+        clampVector.y = Mathf.Clamp(clampVector.y, minY, maxY);
 
-        newPosition = v3;
+        newPosition = clampVector;
     }
 }
