@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour {
 
-    private Vector3 moveDir, newPosition;
+    private Vector3 moveDir, newPosition, mousePos;
     private float horAxis, verAxis;
     private float yLim, xLim, aspectRatio, wallWidth;
     private float mouseScroll;
     private Camera mainCamera;
     private float newZoom;
+    private float camSize;
 
     public Transform topWall, rightWall;
     public float camSpeed = 1;
@@ -28,30 +29,34 @@ public class CameraMovement : MonoBehaviour {
     }
 
     void Update () {
+
+#region Setup
+
         aspectRatio = Screen.width / (float)Screen.height;
-
-        #region Setup
-
         horAxis = Input.GetAxis("Horizontal");
         verAxis = Input.GetAxis("Vertical");
         mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+        mousePos = Input.mousePosition;
+        camSize = mainCamera.orthographicSize;
 
         #endregion
 
-        #region Movement
-
-
-        // Scroll forward
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+#region Zoom
+        
+        if (mouseScroll > 0 && mainCamera.orthographicSize > 1)
         {
-            ZoomOrthoCamera(Camera.main.ScreenToWorldPoint(Input.mousePosition), 1);
+            //Zoom out from cursor position
+            ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), 1);
+        }
+        else if (mouseScroll < 0 && mainCamera.orthographicSize < topWall.position.y - (wallWidth / 2))
+        {
+            //Zoom in to cursor position
+            ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -1);
         }
 
-        // Scoll back
-        if (Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            ZoomOrthoCamera(Camera.main.ScreenToWorldPoint(Input.mousePosition), -1);
-        }
+        #endregion
+
+#region Movement
 
         newPosition.x += horAxis;
         newPosition.y += verAxis;
@@ -65,44 +70,10 @@ public class CameraMovement : MonoBehaviour {
 
         #endregion
 
-        #region Zoom
-
-
-        //newZoom = mainCamera.orthographicSize + (mouseScroll * -10);
-        //mainCamera.orthographicSize = newZoom;
-        //mainCamera.orthographicSize = Mathf.Lerp(
-        //    mainCamera.orthographicSize,
-        //    newZoom,
-        //    0.1f);
-
-        //mainCamera.orthographicSize = Mathf.Clamp(
-        //    mainCamera.orthographicSize,
-        //    1f,
-        //    topWall.position.y - (wallWidth / 2));
-
-
-        //if (mainCamera.transform.position.y < 0.001
-        //    && mainCamera.transform.position.y > -0.001
-        //    && mainCamera.transform.position.y != 0)
-        //{
-        //    mainCamera.transform.position = new Vector3(
-        //        mainCamera.transform.position.x,
-        //        0,
-        //        mainCamera.transform.position.z);
-        //}
-
-        #endregion
-
-        
-
-
     }
 
     private void LateUpdate()
     {
-        //Get the camera's orthographic size and aspect ratio
-        float camSize = mainCamera.orthographicSize;
-
         //Assign the limit of the camera's movement
         float maxY = yLim - camSize;
         float minY = maxY * -1;
@@ -117,18 +88,15 @@ public class CameraMovement : MonoBehaviour {
         newPosition = clampVector;
     }
 
-    void ZoomOrthoCamera(Vector3 zoomTowards, float amount)
+    private void ZoomCamera(Vector3 zoomTowards, float amount)
     {
-        // Calculate how much we will have to move towards the zoomTowards position
         float multiplier = (1.0f / mainCamera.orthographicSize * amount);
-
-        // Move camera
+        
         transform.position += (zoomTowards - transform.position) * multiplier;
 
-        // Zoom camera
-        mainCamera.orthographicSize -= amount;
-
-        // Limit zoom
+        mainCamera.orthographicSize = Mathf.SmoothStep(mainCamera.orthographicSize, mainCamera.orthographicSize - amount, .5f);
+        //mainCamera.orthographicSize -= amount;
+        
         mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 1, topWall.position.y - (wallWidth / 2));
         newPosition = transform.position;
     }
