@@ -9,11 +9,16 @@ public class CameraMovement : MonoBehaviour {
     private float yLim, xLim, aspectRatio, wallWidth;
     private float mouseScroll;
     private Camera mainCamera;
-    private float newZoom;
+    private float newZoom, startTime;
     private float camSize;
+
+    bool zoomChanging = false;
+
+
 
     public Transform topWall, rightWall;
     public float camSpeed = 1;
+    public float zoomDuration = 10;
 
     private void Start()
     {
@@ -26,6 +31,7 @@ public class CameraMovement : MonoBehaviour {
         yLim = topWall.position.y - (wallWidth / 2);
         xLim = rightWall.position.x - (wallWidth / 2);
         mainCamera = Camera.main;
+        newZoom = mainCamera.orthographicSize;
     }
 
     void Update () {
@@ -53,6 +59,22 @@ public class CameraMovement : MonoBehaviour {
             //Zoom in to cursor position
             ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -1);
         }
+        
+        mainCamera.orthographicSize = Mathf.Lerp(
+            mainCamera.orthographicSize,
+            newZoom,
+            (Time.time - startTime) / zoomDuration);
+        
+
+        zoomChanging = (newZoom == mainCamera.orthographicSize) ? false : true;
+
+        if (zoomChanging)
+        {
+            transform.position = Vector3.Lerp(
+                transform.position,
+                newPosition,
+                (Time.time - startTime) / zoomDuration);
+        }
 
         #endregion
 
@@ -63,10 +85,13 @@ public class CameraMovement : MonoBehaviour {
 
         //Lerp to the new position
         //TODO: Test whether camspeed actually has an effect
-        transform.position = Vector3.Lerp(
-            transform.position,
-            newPosition,
-            0.25f * camSpeed);
+        if (!zoomChanging)
+        {
+            transform.position = Vector3.Lerp(
+                transform.position,
+                newPosition,
+                0.25f * camSpeed);
+        }
 
         #endregion
 
@@ -90,14 +115,15 @@ public class CameraMovement : MonoBehaviour {
 
     private void ZoomCamera(Vector3 zoomTowards, float amount)
     {
-        float multiplier = (1.0f / mainCamera.orthographicSize * amount);
-        
-        transform.position += (zoomTowards - transform.position) * multiplier;
+        if (!zoomChanging)
+            startTime = Time.time;
+        newZoom -= amount;
+        newZoom = Mathf.Clamp(newZoom, 1, topWall.position.y - (wallWidth / 2));
 
-        mainCamera.orthographicSize = Mathf.SmoothStep(mainCamera.orthographicSize, mainCamera.orthographicSize - amount, .5f);
-        //mainCamera.orthographicSize -= amount;
+        float multiplier = (1.0f / newZoom * amount);
+
+        //newPosition = transform.position;
+        newPosition += (zoomTowards - transform.position) * multiplier;
         
-        mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, 1, topWall.position.y - (wallWidth / 2));
-        newPosition = transform.position;
     }
 }
