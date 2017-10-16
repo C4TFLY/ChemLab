@@ -49,33 +49,27 @@ public class CameraMovement : MonoBehaviour {
 
 #region Zoom
         
-        if (mouseScroll > 0 && mainCamera.orthographicSize > 1)
+        if (mouseScroll > 0 
+            && camSize > 1)
         {
             //Zoom out from cursor position
             ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), 1);
         }
-        else if (mouseScroll < 0 && mainCamera.orthographicSize < topWall.position.y - (wallWidth / 2))
+        else if (mouseScroll < 0
+                && camSize < topWall.position.y - (wallWidth / 2))
         {
             //Zoom in to cursor position
             ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -1);
         }
         
         mainCamera.orthographicSize = Mathf.Lerp(
-            mainCamera.orthographicSize,
+            camSize,
             newZoom,
             (Time.time - startTime) / zoomDuration);
         
 
-        zoomChanging = (newZoom == mainCamera.orthographicSize) ? false : true;
-
-        if (zoomChanging)
-        {
-            transform.position = Vector3.Lerp(
-                transform.position,
-                newPosition,
-                (Time.time - startTime) / zoomDuration);
-        }
-
+        zoomChanging = (newZoom == camSize) ? false : true;
+        
         #endregion
 
 #region Movement
@@ -85,12 +79,19 @@ public class CameraMovement : MonoBehaviour {
 
         //Lerp to the new position
         //TODO: Test whether camspeed actually has an effect
-        if (!zoomChanging)
+        if (zoomChanging)
         {
             transform.position = Vector3.Lerp(
                 transform.position,
                 newPosition,
-                0.25f * camSpeed);
+                (Time.time - startTime) / zoomDuration);
+        }
+        else if (!zoomChanging)
+        {
+            transform.position = Vector3.Lerp(
+                transform.position,
+                newPosition,
+                0.25f);
         }
 
         #endregion
@@ -106,23 +107,25 @@ public class CameraMovement : MonoBehaviour {
         float minX = maxX * -1;
 
         //Clamp the newPosition vector to the limits
-        Vector3 clampVector = newPosition;
-        clampVector.x = Mathf.Clamp(clampVector.x, minX, maxX);
-        clampVector.y = Mathf.Clamp(clampVector.y, minY, maxY);
-
-        newPosition = clampVector;
+        newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
+        newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
     }
 
+    /// <summary>
+    /// Method for zooming the camera towards the mouse position
+    /// </summary>
+    /// <param name="zoomTowards">The mouse position</param>
+    /// <param name="amount">How much the camera size should change per scroll</param>
     private void ZoomCamera(Vector3 zoomTowards, float amount)
     {
-        if (!zoomChanging)
-            startTime = Time.time;
+        startTime = Time.time;
         newZoom -= amount;
-        newZoom = Mathf.Clamp(newZoom, 1, topWall.position.y - (wallWidth / 2));
+        newZoom = Mathf.Clamp(newZoom,
+            1,
+            topWall.position.y - (wallWidth / 2));
 
         float multiplier = (1.0f / newZoom * amount);
 
-        //newPosition = transform.position;
         newPosition += (zoomTowards - transform.position) * multiplier;
         
     }
