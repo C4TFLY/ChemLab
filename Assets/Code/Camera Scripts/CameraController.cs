@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraMovement : MonoBehaviour {
+public class CameraController : MonoBehaviour {
 
     private Vector3 moveDir, newPosition, mousePos;
     private float horAxis, verAxis;
@@ -69,16 +69,16 @@ public class CameraMovement : MonoBehaviour {
         
 
         zoomChanging = (newZoom == camSize) ? false : true;
-        
+
         #endregion
 
-#region Movement
+        #region Movement
+        float speedMultiplier = Time.deltaTime * camSpeed * (camSize * 10);
 
-        newPosition.x += horAxis;
-        newPosition.y += verAxis;
+        newPosition.x += horAxis * Time.deltaTime * camSpeed;
+        newPosition.y += verAxis * Time.deltaTime * camSpeed;
 
         //Lerp to the new position
-        //TODO: Test whether camspeed actually has an effect
         if (zoomChanging)
         {
             transform.position = Vector3.Lerp(

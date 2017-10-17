@@ -1367,7 +1367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topWall: {fileID: 304916326}
   rightWall: {fileID: 854152544}
-  camSpeed: 1
+  camSpeed: 75
   zoomDuration: 2
 --- !u!1 &1824586282
 GameObject:
