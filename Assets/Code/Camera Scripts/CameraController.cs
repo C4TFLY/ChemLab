@@ -5,16 +5,12 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     private Vector3 moveDir, newPosition, mousePos;
-    private float horAxis, verAxis;
-    private float yLim, xLim, aspectRatio, wallWidth;
-    private float mouseScroll;
     private Camera mainCamera;
+    private float horAxis, verAxis, mouseScroll;
+    private float yLim, xLim, aspectRatio, wallWidth;
     private float newZoom, startTime;
-    private float camSize;
-
-    bool zoomChanging = false;
-
-
+    private float camSize, previousCamSize;
+    private bool zoomChanging = false;
 
     public Transform topWall, rightWall;
     public float camSpeed = 1;
@@ -34,7 +30,8 @@ public class CameraController : MonoBehaviour {
         newZoom = mainCamera.orthographicSize;
     }
 
-    void Update () {
+    void Update ()
+    {
 
 #region Setup
 
@@ -68,19 +65,18 @@ public class CameraController : MonoBehaviour {
             newZoom,
             ref zoomVelocity,
             Time.deltaTime * Mathf.Pow(zoomDuration, 2));
-
-
-        zoomChanging = (newZoom == camSize) ? false : true;
+        
+        zoomChanging = (previousCamSize == camSize) ? false : true;
 
         #endregion
 
 #region Movement
+        //Set the new position
         float speedMultiplier = Time.deltaTime * camSpeed * (camSize * 10);
-
         newPosition.x += horAxis * Time.deltaTime * speedMultiplier;
         newPosition.y += verAxis * Time.deltaTime * speedMultiplier;
 
-        //Lerp to the new position
+        //Lerp to the new position deoending on whether the zoom is active or not
         if (zoomChanging)
         {
             Vector3 moveVel = new Vector3(0, 0, 0);
@@ -109,6 +105,7 @@ public class CameraController : MonoBehaviour {
         //Clamp the newPosition vector to the limits
         newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
         newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
+        previousCamSize = camSize;
     }
 
     /// <summary>
