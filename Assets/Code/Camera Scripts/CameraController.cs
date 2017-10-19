@@ -61,30 +61,30 @@ public class CameraController : MonoBehaviour {
             //Zoom in to cursor position
             ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -1);
         }
-        
-        mainCamera.orthographicSize = Mathf.Lerp(
+
+        float zoomVelocity = 0f;
+        mainCamera.orthographicSize = Mathf.SmoothDamp(
             camSize,
             newZoom,
-            (Time.time - startTime) / zoomDuration);
-        
+            ref zoomVelocity,
+            Time.deltaTime * Mathf.Pow(zoomDuration, 2));
+
 
         zoomChanging = (newZoom == camSize) ? false : true;
 
         #endregion
 
-        #region Movement
+#region Movement
         float speedMultiplier = Time.deltaTime * camSpeed * (camSize * 10);
 
-        newPosition.x += horAxis * Time.deltaTime * camSpeed;
-        newPosition.y += verAxis * Time.deltaTime * camSpeed;
+        newPosition.x += horAxis * Time.deltaTime * speedMultiplier;
+        newPosition.y += verAxis * Time.deltaTime * speedMultiplier;
 
         //Lerp to the new position
         if (zoomChanging)
         {
-            transform.position = Vector3.Lerp(
-                transform.position,
-                newPosition,
-                (Time.time - startTime) / zoomDuration);
+            Vector3 moveVel = new Vector3(0, 0, 0);
+            transform.position = Vector3.SmoothDamp(transform.position, newPosition, ref moveVel, Time.deltaTime * Mathf.Pow(zoomDuration, 2));
         }
         else if (!zoomChanging)
         {
@@ -118,7 +118,8 @@ public class CameraController : MonoBehaviour {
     /// <param name="amount">How much the camera size should change per scroll</param>
     private void ZoomCamera(Vector3 zoomTowards, float amount)
     {
-        startTime = Time.time;
+        if (!zoomChanging)
+            startTime = Time.time;
         newZoom -= amount;
         newZoom = Mathf.Clamp(newZoom,
             1,
