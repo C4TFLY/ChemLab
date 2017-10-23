@@ -53,7 +53,7 @@ public class CameraController : MonoBehaviour {
             ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), 1);
         }
         else if (mouseScroll < 0
-                && camSize < topWall.position.y - (wallWidth / 2))
+                && camSize < topWall.position.y - (wallWidth / 2) - 0.05f)
         {
             //Zoom in to cursor position
             ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -1);
@@ -98,13 +98,10 @@ public class CameraController : MonoBehaviour {
     {
         //Assign the limit of the camera's movement
         float maxY = yLim - camSize;
-        float minY = maxY * -1;
         float maxX = xLim - (camSize * aspectRatio);
-        float minX = maxX * -1;
-
-        //Clamp the newPosition vector to the limits
-        newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
-        newPosition.y = Mathf.Clamp(newPosition.y, minY, maxY);
+        
+        transform.position = ClampVectorXY(transform.position, maxX, maxY);
+        newPosition = ClampVectorXY(newPosition, maxX, maxY);
         previousCamSize = camSize;
     }
 
@@ -126,5 +123,23 @@ public class CameraController : MonoBehaviour {
 
         newPosition += (zoomTowards - transform.position) * multiplier;
         
+    }
+
+    /// <summary>
+    /// Clamp a vector along the X-Y axis to within an area. Center is considered to be 0,0,0.
+    /// </summary>
+    /// <param name="vector">The vector to clamp.</param>
+    /// <param name="maxX">The maximum X value.</param>
+    /// <param name="maxY">The minimum Y value.</param>
+    /// <returns>The clamped vector.</returns>
+    private Vector3 ClampVectorXY(Vector3 vector, float maxX, float maxY)
+    {
+        float minX = maxX * -1;
+        float minY = maxY * -1;
+
+        Vector3 clampVector = vector;
+        clampVector.x = Mathf.Clamp(clampVector.x, minX, maxX);
+        clampVector.y = Mathf.Clamp(clampVector.y, minY, maxY);
+        return clampVector;
     }
 }
