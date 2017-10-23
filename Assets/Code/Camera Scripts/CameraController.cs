@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour {
     private Camera mainCamera;
     private float horAxis, verAxis, mouseScroll;
     private float yLim, xLim, aspectRatio, wallWidth;
-    private float newZoom, startTime;
+    private float newZoom;
     private float camSize, previousCamSize;
     private bool zoomChanging = false;
 
@@ -112,8 +112,6 @@ public class CameraController : MonoBehaviour {
     /// <param name="amount">How much the camera size should change per scroll</param>
     private void ZoomCamera(Vector3 zoomTowards, float amount)
     {
-        if (!zoomChanging)
-            startTime = Time.time;
         newZoom -= amount;
         newZoom = Mathf.Clamp(newZoom,
             1,

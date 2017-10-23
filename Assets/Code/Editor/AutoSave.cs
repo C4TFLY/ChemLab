@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 
 [InitializeOnLoad]
@@ -6,10 +7,10 @@ public class AutoSave {
 
     static AutoSave()
     {
-        EditorApplication.playmodeStateChanged += OnPlayModeStateChanged;
+        EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
     }
 
-    static void OnPlayModeStateChanged()
+    private static void OnPlayModeStateChanged(PlayModeStateChange state)
     {
         if (EditorApplication.isPlaying == false)
         {
