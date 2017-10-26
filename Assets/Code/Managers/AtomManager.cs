@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AtomManager : MonoBehaviour {
-    
-    public static void Merge(GameObject[] atoms)
+
+    public static List<GameObject> selectedObjects = new List<GameObject>();
+
+
+    private static int x = 0;
+
+    public static void Merge()
     {
-        GameObject newParent = new GameObject("Deuterium");
-        for (int i = 0; i < atoms.Length; i++)
+        GameObject newParent = new GameObject($"Parent{x}");
+        for (int i = 0; i < selectedObjects.Count; i++)
         {
-            atoms[i].transform.SetParent(newParent.transform);
+            selectedObjects[i].transform.SetParent(newParent.transform);
+            x++;
         }
     }
-
 }

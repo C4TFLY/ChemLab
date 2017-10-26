@@ -103,6 +103,12 @@ public class CameraController : MonoBehaviour {
         transform.position = ClampVectorXY(transform.position, maxX, maxY);
         newPosition = ClampVectorXY(newPosition, maxX, maxY);
         previousCamSize = camSize;
+
+        if (transform.position.y < 0.005f
+            && transform.position.y > -0.005f)
+        {
+            transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+        }
     }
 
     /// <summary>
