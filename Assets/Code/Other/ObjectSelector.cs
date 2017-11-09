@@ -5,14 +5,10 @@ using UnityEngine;
 public class ObjectSelector : MonoBehaviour
 {
     private bool selected = false;
-    private Shader outlinedShader;
-    private Shader defaultShader;
+    public Shader outlinedShader;
+    public Shader defaultShader;
 
-    private void Start()
-    {
-        outlinedShader = Shader.Find("Outlined");
-        defaultShader = Shader.Find("Unlit/Color");
-    }
+    
 
     private void OnMouseOver()
     {

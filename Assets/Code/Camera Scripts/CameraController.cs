@@ -13,7 +13,7 @@ public class CameraController : MonoBehaviour {
     private bool zoomChanging = false;
 
     public Transform topWall, rightWall;
-    public float camSpeed = 1;
+    [Range(0, 4)] public float camSpeed = 1;
     public float zoomDuration = 10;
 
     private void Start()
@@ -73,8 +73,8 @@ public class CameraController : MonoBehaviour {
 #region Movement
         //Set the new position
         float speedMultiplier = Time.deltaTime * camSpeed * (camSize * 10);
-        newPosition.x += horAxis * Time.deltaTime * speedMultiplier;
-        newPosition.y += verAxis * Time.deltaTime * speedMultiplier;
+        newPosition.x += horAxis * speedMultiplier;
+        newPosition.y += verAxis * speedMultiplier;
 
         //Lerp to the new position deoending on whether the zoom is active or not
         if (zoomChanging)

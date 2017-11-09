@@ -64,11 +64,7 @@ ENDCG
 		Name "BASE"
 		ZWrite On
 		Cull Back
-		SetTexture[_MainTex]{
-			constantColor [_Color]
-			Combine texture * constant, texture * constant
-}
-		/*ZTest LEqual
+		ZTest LEqual
 		Blend SrcAlpha OneMinusSrcAlpha
 		Material {
 			Diffuse[_Color]
@@ -81,7 +77,7 @@ ENDCG
 		}
 		SetTexture[_MainTex] {
 			Combine previous * primary DOUBLE
-		}*/
+		}
 	}
 }
 

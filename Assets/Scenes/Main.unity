@@ -192,21 +192,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
-        type: 2}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
-    - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
-        type: 2}
-      propertyPath: m_CastShadows
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
-        type: 2}
-      propertyPath: m_ReceiveShadows
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3fd48cb4f3273604d96985c4522bedc1, type: 2}
   m_IsPrefabParent: 0
@@ -257,7 +242,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
         type: 2}
       propertyPath: m_CastShadows
@@ -430,7 +415,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &456431305
 Light:
   m_ObjectHideFlags: 0
@@ -473,13 +458,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 456431304}
-  m_LocalRotation: {x: 0.23873043, y: -0, z: -0, w: 0.97108597}
-  m_LocalPosition: {x: 0.06, y: 0, z: -10.62}
+  m_LocalRotation: {x: 0.11837674, y: -0.109039485, z: 0.01307938, w: 0.986877}
+  m_LocalPosition: {x: 0, y: 0, z: -10.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 27.623001, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 13.68, y: -12.61, z: 0}
 --- !u!1001 &658136922
 Prefab:
   m_ObjectHideFlags: 0
@@ -527,7 +512,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
         type: 2}
       propertyPath: m_CastShadows
@@ -662,7 +647,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 1877274541142204, guid: 3fd48cb4f3273604d96985c4522bedc1, type: 2}
       propertyPath: m_IsActive
       value: 1
@@ -772,7 +757,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
         type: 2}
       propertyPath: m_CastShadows
@@ -833,7 +818,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
         type: 2}
       propertyPath: m_CastShadows
@@ -894,7 +879,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
         type: 2}
       propertyPath: m_CastShadows
@@ -955,7 +940,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
         type: 2}
       propertyPath: m_CastShadows
@@ -1048,7 +1033,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
         type: 2}
       propertyPath: m_CastShadows
@@ -1286,7 +1271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topWall: {fileID: 304916326}
   rightWall: {fileID: 854152544}
-  camSpeed: 75
+  camSpeed: 2
   zoomDuration: 1.5
 --- !u!1001 &1910659265
 Prefab:
@@ -1335,7 +1320,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
         type: 2}
       propertyPath: m_CastShadows
@@ -1437,7 +1422,7 @@ Prefab:
         type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fa4f37791c07e014fa38054b3b7e5a4e, type: 2}
+      objectReference: {fileID: 2100000, guid: a663c9eee5f24a347b74c2812427908e, type: 2}
     - target: {fileID: 23385217051302228, guid: 3fd48cb4f3273604d96985c4522bedc1,
         type: 2}
       propertyPath: m_CastShadows
