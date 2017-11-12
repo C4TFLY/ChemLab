@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour {
     private float newZoom;
     private float camSize, previousCamSize;
     private bool zoomChanging = false;
+    private bool zoomInButton, zoomOutButton;
 
     public Transform topWall, rightWall;
     [Range(0, 4)] public float camSpeed = 1;
@@ -41,19 +42,21 @@ public class CameraController : MonoBehaviour {
         mouseScroll = Input.GetAxis("Mouse ScrollWheel");
         mousePos = Input.mousePosition;
         camSize = mainCamera.orthographicSize;
+        zoomInButton = Input.GetKeyDown("-");
+        zoomOutButton = Input.GetKeyDown("+");
 
         #endregion
 
 #region Zoom
         
-        if (mouseScroll > 0 
-            && camSize > 1)
+        if ((mouseScroll > 0 || zoomOutButton)
+            && camSize < topWall.position.y - (wallWidth / 2) - 0.05f)
         {
             //Zoom out from cursor position
             ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), 1);
         }
-        else if (mouseScroll < 0
-                && camSize < topWall.position.y - (wallWidth / 2) - 0.05f)
+        else if ((mouseScroll < 0 || zoomInButton)
+                && camSize > 1)
         {
             //Zoom in to cursor position
             ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -1);
