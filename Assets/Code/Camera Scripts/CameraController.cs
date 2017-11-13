@@ -119,8 +119,7 @@ public class CameraController : MonoBehaviour {
         }
 
         #endregion
-
-        Debug.Log(Mathf.Round(camSize * 100) / 100);
+        
     }
 
     private void LateUpdate()
@@ -139,7 +138,12 @@ public class CameraController : MonoBehaviour {
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         }
 
-        camSize = Mathf.Round(camSize * 100) / 100;
+        //Fix for camera size being of values using more than 2 decimals
+        if ((camSize > newZoom && (camSize - newZoom) < 0.01)
+            || (camSize < newZoom && (newZoom - camSize) < 0.01))
+        {
+            mainCamera.orthographicSize = newZoom;
+        }
     }
 
     /// <summary>
