@@ -1272,6 +1272,7 @@ MonoBehaviour:
   topWall: {fileID: 304916326}
   rightWall: {fileID: 854152544}
   camSpeed: 2
+  maxZoom: 5
   zoomDuration: 1.5
 --- !u!1001 &1910659265
 Prefab:

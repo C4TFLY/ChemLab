@@ -15,20 +15,27 @@ public class CameraController : MonoBehaviour {
 
     public Transform topWall, rightWall;
     [Range(0, 4)] public float camSpeed = 1;
+    [Range(1, 20)] public float maxZoom = 1;
     public float zoomDuration = 10;
 
     private void Start()
     {
+
+#region First-time assignments
+
         //Lock newPosition Z value
         newPosition.z = transform.position.z;
 
         wallWidth = topWall.gameObject.GetComponent<BoxCollider>().size.y;
 
-        //Setup for camera limitations;
+        //Setup for camera limitations
         yLim = topWall.position.y - (wallWidth / 2);
         xLim = rightWall.position.x - (wallWidth / 2);
         mainCamera = Camera.main;
         newZoom = mainCamera.orthographicSize;
+
+        #endregion
+         
     }
 
     void Update ()
@@ -43,22 +50,23 @@ public class CameraController : MonoBehaviour {
         mousePos = Input.mousePosition;
         camSize = mainCamera.orthographicSize;
         zoomInButtonNP = Input.GetKey(KeyCode.KeypadPlus);
-        zoomInButton = Input.GetKey(KeyCode.Plus);
+        zoomInButton = Input.GetKey(KeyCode.Equals);
         zoomOutButtonNP = Input.GetKey(KeyCode.KeypadMinus);
         zoomOutButton = Input.GetKey(KeyCode.Minus);
 
         #endregion
 
-        #region Zoom
+#region Zoom
 
-        if (camSize > 1)
+        if (camSize > maxZoom)
         {
             if (mouseScroll > 0)
             {
                 //Zoom in to cursor position
                 ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), 1);
             }
-            else if (zoomInButton)
+            else if (zoomInButton
+                    || zoomInButtonNP)
             {
                 //Zoom in to cursor position
                 ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), .1f);
@@ -71,7 +79,8 @@ public class CameraController : MonoBehaviour {
                 //Zoom out from cursor position
                 ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -1);
             }
-            else if (zoomOutButton)
+            else if (zoomOutButton
+                    || zoomOutButtonNP)
             {
                 //Zoom out from cursor position
                 ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -.1f);
@@ -111,6 +120,7 @@ public class CameraController : MonoBehaviour {
 
         #endregion
 
+        Debug.Log(Mathf.Round(camSize * 100) / 100);
     }
 
     private void LateUpdate()
@@ -128,6 +138,8 @@ public class CameraController : MonoBehaviour {
         {
             transform.position = new Vector3(transform.position.x, 0, transform.position.z);
         }
+
+        camSize = Mathf.Round(camSize * 100) / 100;
     }
 
     /// <summary>
@@ -139,7 +151,7 @@ public class CameraController : MonoBehaviour {
     {
         newZoom -= amount;
         newZoom = Mathf.Clamp(newZoom,
-            1,
+            maxZoom,
             topWall.position.y - (wallWidth / 2));
 
         float multiplier = (1.0f / newZoom * amount);
