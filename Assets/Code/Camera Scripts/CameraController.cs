@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour {
     private float newZoom;
     private float camSize, previousCamSize;
     private bool zoomChanging = false;
-    private bool zoomInButton, zoomOutButton;
+    private bool zoomInButton, zoomInButtonNP, zoomOutButton, zoomOutButtonNP;
 
     public Transform topWall, rightWall;
     [Range(0, 4)] public float camSpeed = 1;
@@ -42,24 +42,40 @@ public class CameraController : MonoBehaviour {
         mouseScroll = Input.GetAxis("Mouse ScrollWheel");
         mousePos = Input.mousePosition;
         camSize = mainCamera.orthographicSize;
-        zoomInButton = Input.GetKeyDown("-");
-        zoomOutButton = Input.GetKeyDown("+");
+        zoomInButtonNP = Input.GetKey(KeyCode.KeypadPlus);
+        zoomInButton = Input.GetKey(KeyCode.Plus);
+        zoomOutButtonNP = Input.GetKey(KeyCode.KeypadMinus);
+        zoomOutButton = Input.GetKey(KeyCode.Minus);
 
         #endregion
 
-#region Zoom
-        
-        if ((mouseScroll > 0 || zoomOutButton)
-            && camSize < topWall.position.y - (wallWidth / 2) - 0.05f)
+        #region Zoom
+
+        if (camSize > 1)
         {
-            //Zoom out from cursor position
-            ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), 1);
+            if (mouseScroll > 0)
+            {
+                //Zoom in to cursor position
+                ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), 1);
+            }
+            else if (zoomInButton)
+            {
+                //Zoom in to cursor position
+                ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), .1f);
+            }
         }
-        else if ((mouseScroll < 0 || zoomInButton)
-                && camSize > 1)
+        if (camSize < topWall.position.y - (wallWidth / 2) - 0.05f)
         {
-            //Zoom in to cursor position
-            ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -1);
+            if (mouseScroll < 0)
+            {
+                //Zoom out from cursor position
+                ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -1);
+            }
+            else if (zoomOutButton)
+            {
+                //Zoom out from cursor position
+                ZoomCamera(mainCamera.ScreenToWorldPoint(mousePos), -.1f);
+            }
         }
 
         float zoomVelocity = 0f;
