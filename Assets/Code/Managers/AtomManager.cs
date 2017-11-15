@@ -11,11 +11,17 @@ public class AtomManager : MonoBehaviour {
 
     public static void Merge()
     {
-        GameObject newParent = new GameObject($"Parent{x}");
-        for (int i = 0; i < selectedObjects.Count; i++)
+        if (selectedObjects.Count > 1)
         {
-            selectedObjects[i].transform.SetParent(newParent.transform);
+            GameObject newParent = new GameObject($"Parent{x}");
             x++;
+            for (int i = 0; i < selectedObjects.Count; i++)
+            {
+                selectedObjects[i].transform.SetParent(newParent.transform);
+
+                selectedObjects[i].GetComponent<ObjectSelector>().DeSelect(true);
+            }
+            selectedObjects.Clear();
         }
     }
 }
