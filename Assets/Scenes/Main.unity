@@ -122,6 +122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 22906686}
   - component: {fileID: 22906687}
+  - component: {fileID: 22906688}
   m_Layer: 0
   m_Name: _GameManager
   m_TagString: Untagged
@@ -153,6 +154,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45540c3d232b0614196b9ac660108392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &22906688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 22906685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69efc25feeebfd049ae08d7f66743dc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlinedShader: {fileID: 4800000, guid: 3c993b8e32f00ab4b8261542de2f6fec, type: 3}
+  defaultShader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1001 &88405439
 Prefab:
   m_ObjectHideFlags: 0
@@ -1272,7 +1286,7 @@ MonoBehaviour:
   topWall: {fileID: 304916326}
   rightWall: {fileID: 854152544}
   camSpeed: 2
-  maxZoom: 5
+  maxZoom: 2.42
   zoomDuration: 1.5
 --- !u!1001 &1910659265
 Prefab:

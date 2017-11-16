@@ -6,6 +6,6 @@ public class UIManager : MonoBehaviour {
 
 	public void Merge()
     {
-        AtomManager.Merge();
+        ObjectManager.Merge();
     }
 }

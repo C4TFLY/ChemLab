@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AtomManager : MonoBehaviour {
+public class ObjectManager : MonoBehaviour {
 
     public static List<GameObject> selectedObjects = new List<GameObject>();
 
@@ -17,10 +17,13 @@ public class AtomManager : MonoBehaviour {
             x++;
             for (int i = 0; i < selectedObjects.Count; i++)
             {
+                Selector selector = selectedObjects[i].GetComponent<Selector>();
                 selectedObjects[i].transform.SetParent(newParent.transform);
 
-                selectedObjects[i].GetComponent<ObjectSelector>().DeSelect(true);
+                selector.DeSelect(true);
+                selector.merged = true;
             }
+            newParent.AddComponent<Selector>();
             selectedObjects.Clear();
         }
     }
