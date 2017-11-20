@@ -12,10 +12,20 @@ public class FloatingController : MonoBehaviour {
     private Vector3 initialDir;
     private Rigidbody rb;
     private Vector3 moveDirection;
+    private Selector selector;
 
     private void Start()
     {
-        initialDir = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0);
+        selector = GetComponent<Selector>();
+
+        initialDir = new Vector3(
+            Random.Range(
+                -1f,
+                1f),
+            Random.Range(
+                -1f,
+                1f),
+            0);
         
 
         rb = GetComponent<Rigidbody>();
@@ -27,12 +37,18 @@ public class FloatingController : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        rb.MovePosition(transform.position + moveDirection * Time.deltaTime * moveSpeed);
+        if (!selector.merged)
+        {
+            rb.MovePosition(transform.position + moveDirection * Time.deltaTime * moveSpeed);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        moveDirection = Vector3.Reflect(moveDirection, collision.contacts[0].normal);
+        if (!selector.merged)
+        {
+            moveDirection = Vector3.Reflect(moveDirection, collision.contacts[0].normal);
+        }
     }
 
 }

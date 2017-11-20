@@ -15,14 +15,50 @@ public class ObjectManager : MonoBehaviour {
         {
             GameObject newParent = new GameObject($"Parent{x}");
             x++;
+            float xSum = 0;
+            float ySum = 0;
+
+            for (int i = 0; i < selectedObjects.Count; i++)
+            {
+                selectedObjects[i].transform.SetParent(newParent.transform);
+                
+                foreach(GameObject obj in selectedObjects)
+                {
+                    Physics.IgnoreCollision(obj.GetComponent<SphereCollider>(), selectedObjects[i].GetComponent<SphereCollider>());
+                }
+
+
+
+                xSum += selectedObjects[i].transform.position.x;
+                ySum += selectedObjects[i].transform.position.y;  
+            }
+
+            float xAvg = xSum / selectedObjects.Count;
+            float yAvg = ySum / selectedObjects.Count;
+
+            Vector3 avg = new Vector3(xAvg, yAvg, 0);
+
             for (int i = 0; i < selectedObjects.Count; i++)
             {
                 Selector selector = selectedObjects[i].GetComponent<Selector>();
-                selectedObjects[i].transform.SetParent(newParent.transform);
+                float rnd = Random.Range(
+                    0.65f,
+                    0.9f);
+
+                if (Random.Range(0f, 1f) > 0.5f)
+                {
+                    rnd *= -1;
+                }
+
+                selectedObjects[i].transform.position = new Vector3(
+                    avg.x + rnd,
+                    avg.y + rnd,
+                    selectedObjects[i].transform.position.z);
 
                 selector.DeSelect(true);
                 selector.merged = true;
             }
+
             newParent.AddComponent<Selector>();
             selectedObjects.Clear();
         }
