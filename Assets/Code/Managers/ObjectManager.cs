@@ -37,22 +37,33 @@ public class ObjectManager : MonoBehaviour {
             float yAvg = ySum / selectedObjects.Count;
 
             Vector3 avg = new Vector3(xAvg, yAvg, 0);
+            newParent.transform.position = avg;
 
             for (int i = 0; i < selectedObjects.Count; i++)
             {
                 Selector selector = selectedObjects[i].GetComponent<Selector>();
-                float rnd = Random.Range(
+                float rndX = Random.Range(
                     0.65f,
                     0.9f);
 
-                if (Random.Range(0f, 1f) > 0.5f)
-                {
-                    rnd *= -1;
-                }
+                float rndY = Random.Range(
+                    0.65f,
+                    0.9f);
+
+                rndX = Mathf.Round(rndX * 100) / 100;
+                rndY = Mathf.Round(rndY * 100) / 100;
+
+                rndX = RandomInvert(rndX);
+                rndY = RandomInvert(rndY);
+
+                Debug.Log(rndX);
+                Debug.Log(rndY);
+
+                Debug.Log("pos: " + selectedObjects[i].transform.position);
 
                 selectedObjects[i].transform.position = new Vector3(
-                    avg.x + rnd,
-                    avg.y + rnd,
+                    rndX,
+                    rndY,
                     selectedObjects[i].transform.position.z);
 
                 selector.DeSelect(true);
@@ -63,4 +74,15 @@ public class ObjectManager : MonoBehaviour {
             selectedObjects.Clear();
         }
     }
+
+    private static float RandomInvert(float random)
+    {
+        if(Random.Range(0f, 1f) > 0.5f)
+        {
+            random *= -1;
+        }
+
+        return random;
+    }
+
 }
