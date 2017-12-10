@@ -39,32 +39,47 @@ public class ObjectManager : MonoBehaviour {
             Vector3 avg = new Vector3(xAvg, yAvg, 0);
             newParent.transform.position = avg;
 
-            for (int i = 0; i < selectedObjects.Count; i++)
+            selectedObjects[0].transform.position = newParent.transform.position;
+            selectedObjects[0].GetComponent<Selector>().DeSelect(true);
+            selectedObjects[0].GetComponent<Selector>().merged = true;
+
+            for (int i = 1; i < selectedObjects.Count; i++)
             {
                 Selector selector = selectedObjects[i].GetComponent<Selector>();
-                float rndX = Random.Range(
-                    0.65f,
-                    0.9f);
 
-                float rndY = Random.Range(
-                    0.65f,
-                    0.9f);
-
-                rndX = Mathf.Round(rndX * 100) / 100;
-                rndY = Mathf.Round(rndY * 100) / 100;
-
-                rndX = RandomInvert(rndX);
-                rndY = RandomInvert(rndY);
-
-                Debug.Log(rndX);
-                Debug.Log(rndY);
-
-                Debug.Log("pos: " + selectedObjects[i].transform.position);
+                float randomAngle = Random.Range(
+                    0f,
+                    360f);
 
                 selectedObjects[i].transform.position = new Vector3(
-                    rndX,
-                    rndY,
-                    selectedObjects[i].transform.position.z);
+                    newParent.transform.position.x + (Mathf.Cos(randomAngle) / 0.8f),
+                    newParent.transform.position.y + (Mathf.Sin(randomAngle) / 0.8f),
+                    0);
+
+
+                //float rndX = Random.Range(
+                //    0.65f,
+                //    0.9f);
+
+                //float rndY = Random.Range(
+                //    0.65f,
+                //    0.9f);
+
+                //rndX = Mathf.Round(rndX * 100) / 100;
+                //rndY = Mathf.Round(rndY * 100) / 100;
+
+                //rndX = RandomInvert(rndX);
+                //rndY = RandomInvert(rndY);
+
+                //Debug.Log(rndX);
+                //Debug.Log(rndY);
+
+                //Debug.Log("pos: " + selectedObjects[i].transform.position);
+
+                //selectedObjects[i].transform.position = new Vector3(
+                //    newParent.transform.position.x + rndX,
+                //    newParent.transform.position.y + rndY,
+                //    selectedObjects[i].transform.position.z);
 
                 selector.DeSelect(true);
                 selector.merged = true;
