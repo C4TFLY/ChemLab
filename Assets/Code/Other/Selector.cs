@@ -44,19 +44,19 @@ public class Selector : MonoBehaviour
         UpdateShader(gameObject, ManagerStorage.OutlinedShader);
     }
 
-    public void DeSelect(bool mergeRemove = false)
+    /// <summary>
+    /// Deselect the GameObject
+    /// </summary>
+    public void DeSelect()
     {
         selected = false;
         UpdateShader(gameObject, ManagerStorage.DefaultShader);
-        if (!mergeRemove)
-        {
-            ObjectManager.selectedObjects.Remove(gameObject);
-        }
     }
 
     public void GroupSelect()
     {
         Transform parent = transform.parent;
+        ObjectManager.selectedObjects.Add(parent.gameObject);
         foreach(Transform child in parent)
         {
             child.gameObject.GetComponent<Selector>().selected = true;

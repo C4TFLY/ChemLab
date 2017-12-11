@@ -4,8 +4,20 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour {
 
-	public void Merge()
+    private MergeManager mergeManager;
+
+    private void Awake()
     {
-        ObjectManager.Merge();
+        mergeManager = new MergeManager();
+    }
+
+    public void Merge()
+    {
+        mergeManager.Merge(ObjectManager.selectedObjects);
+    }
+
+    public void Separate()
+    {
+        mergeManager.Separate(ObjectManager.selectedObjects, true);
     }
 }
