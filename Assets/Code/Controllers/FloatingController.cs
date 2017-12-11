@@ -39,7 +39,15 @@ public class FloatingController : MonoBehaviour {
     {
         if (!selector.merged)
         {
-            rb.MovePosition(transform.position + moveDirection * Time.deltaTime * moveSpeed);
+            if(rb.drag > 0 && rb.velocity.magnitude <= (moveDirection * Time.deltaTime * moveSpeed).magnitude)
+            {
+                rb.velocity = moveDirection * Time.deltaTime * moveSpeed; 
+                rb.drag = 0;
+            }
+            else
+            {
+                rb.MovePosition(transform.position + moveDirection * Time.deltaTime * moveSpeed);
+            }
         }
     }
 

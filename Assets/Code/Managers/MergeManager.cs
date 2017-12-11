@@ -111,7 +111,10 @@ public class MergeManager : MonoBehaviour {
                     Rigidbody rb = hit.GetComponent<Rigidbody>();
 
                     if (rb != null)
-                        rb.AddExplosionForce(10.0f, explosionPos, 10.0f, 3.0F);
+                    {
+                        rb.AddExplosionForce(100.0f, explosionPos, 10.0f);
+                        rb.drag = 1.0f;
+                    }
                 }
             }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Selector : MonoBehaviour
 {
     [HideInInspector] public bool selected = false;
-    [HideInInspector] public bool merged = false;
+    public bool merged = false;
     public Shader outlinedShader;
     public Shader defaultShader;
 
