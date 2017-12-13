@@ -13,6 +13,7 @@ public class FloatingController : MonoBehaviour {
     private Rigidbody rb;
     private Vector3 moveDirection;
     private Selector selector;
+    private Vector3 lastVelocity;
 
     private void Start()
     {
@@ -31,23 +32,26 @@ public class FloatingController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         
 
-        moveDirection = initialDir;
+        moveDirection = initialDir.normalized;
         moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
+        lastVelocity = moveDirection;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
+        float dTime = Time.deltaTime;
         if (!selector.merged)
         {
-            if(rb.drag > 0 && rb.velocity.magnitude <= (moveDirection * Time.deltaTime * moveSpeed).magnitude)
-            {
-                rb.velocity = moveDirection * Time.deltaTime * moveSpeed; 
-                rb.drag = 0;
-            }
-            else
-            {
-                rb.MovePosition(transform.position + moveDirection * Time.deltaTime * moveSpeed);
-            }
+            //if (rb.drag > 0 && rb.velocity.magnitude <= lastVelocity.magnitude)
+            //{
+            //    rb.velocity = moveDirection * dTime * moveSpeed; 
+            //    rb.drag = 0;
+            //}
+            //else
+            //{
+            rb.velocity = (moveDirection * (moveSpeed * 100)) * Time.deltaTime ;
+            //}
+            lastVelocity = moveDirection * dTime * moveSpeed;
         }
     }
 

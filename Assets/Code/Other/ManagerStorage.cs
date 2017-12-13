@@ -12,6 +12,7 @@ public class ManagerStorage : MonoBehaviour {
 
     private void Awake()
     {
+        Application.targetFrameRate = 2;
         OutlinedShader = outlinedShader;
         DefaultShader = defaultShader;
     }
