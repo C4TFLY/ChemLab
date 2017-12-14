@@ -112,8 +112,7 @@ public class MergeManager : MonoBehaviour {
 
                     if (rb != null)
                     {
-                        rb.AddExplosionForce(100.0f, explosionPos, 10.0f);
-                        rb.drag = 1.0f;
+                        rb.AddExplosionForce(200.0f, explosionPos, 10.0f);
                     }
                 }
             }
