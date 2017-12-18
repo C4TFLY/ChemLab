@@ -26,6 +26,7 @@ public class MergeManager : MonoBehaviour {
         for (int i = 0; i < selectedObjects.Count; i++)
         {
             selectedObjects[i].transform.SetParent(newParent.transform);
+            selectedObjects[i].GetComponent<Rigidbody>().velocity = Vector3.zero;
 
             foreach (GameObject obj in selectedObjects)
             {
@@ -91,34 +92,49 @@ public class MergeManager : MonoBehaviour {
             parent.transform.DetachChildren();
             Destroy(parent);
         }
-        foreach (Transform child in children)
-        {
-            foreach (Transform sibling in children)
-            {
-                Physics.IgnoreCollision(child.gameObject.GetComponent<SphereCollider>(), sibling.gameObject.GetComponent<SphereCollider>(), false);
-            }
-        }
 
         if (explode)
         {
             foreach (GameObject parent in selectedObjects)
             {
                 Debug.Log("kaboom");
-                Vector3 explosionPos = parent.transform.position;
-                Collider[] colliders = Physics.OverlapSphere(explosionPos, 10.0f);
+
+                Bounds bounds = new Bounds(children[0].position, Vector3.zero);
+                for (int i = 0; i < children.Count; i++)
+                {
+                    bounds.Encapsulate(children[i].position);
+                }
+
+                Collider[] colliders = Physics.OverlapSphere(bounds.center, 10.0f);
                 foreach (Collider hit in colliders)
                 {
                     Rigidbody rb = hit.GetComponent<Rigidbody>();
 
                     if (rb != null)
                     {
-                        rb.AddExplosionForce(200.0f, explosionPos, 10.0f);
+                        rb.AddExplosionForce(500f, bounds.center, 10.0f);
+                        rb.drag = 1;
                     }
                 }
             }
 
         }
-
+        CollisionEnableDelay(.25f, children);
         selectedObjects.Clear();
+    }
+
+    private IEnumerable CollisionEnableDelay(float delay, List<Transform> objects)
+    {
+        yield return new WaitForSeconds(delay);
+        foreach (Transform child in objects)
+        {
+            foreach (Transform sibling in objects)
+            {
+                Physics.IgnoreCollision(child.gameObject.GetComponent<SphereCollider>(), sibling.gameObject.GetComponent<SphereCollider>(), false);
+            }
+            print(child);
+            child.GetComponent<FloatingController>().slowDown = true;
+        }
+
     }
 }

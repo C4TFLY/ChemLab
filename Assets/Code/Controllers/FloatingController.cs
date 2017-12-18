@@ -8,12 +8,14 @@ public class FloatingController : MonoBehaviour {
     public float minMoveSpeed = 0.3f;
     public float maxMoveSpeed = 0.7f;
     public Vector3 moveDirection;
+    public bool slowDown = false;
 
     private float moveSpeed;
     private Vector3 initialDir;
     private Rigidbody rb;
     private Selector selector;
-    private Vector3 lastVelocity;
+    private Vector3 originalVelocity;
+    private bool firstTime = true;
 
     private void Start()
     {
@@ -34,21 +36,31 @@ public class FloatingController : MonoBehaviour {
 
         moveDirection = initialDir.normalized;
         moveSpeed = Random.Range(minMoveSpeed, maxMoveSpeed);
-        lastVelocity = moveDirection;
+
+        rb.AddForce(moveDirection * moveSpeed * 100);
+        rb.drag = 0;
     }
 
     private void Update()
     {
-        if (rb.velocity.magnitude < 0.01)
+        if (firstTime)
         {
-            rb.velocity = Vector3.zero;
+            originalVelocity = rb.velocity;
+            firstTime = false;
         }
-        else
+    }
+
+    private void LateUpdate()
+    {
+        if (!selector.merged
+            && rb.velocity.magnitude < originalVelocity.magnitude
+            && rb.drag > 0
+            && slowDown)
         {
-        }
-        if (!selector.merged)
-        {
-            rb.MovePosition(transform.position + (moveDirection * Time.deltaTime * moveSpeed));
+            //rb.MovePosition(transform.position + (moveDirection * Time.deltaTime * moveSpeed));
+            rb.drag = 0;
+            slowDown = false;
+            print("boop");
         }
     }
 
@@ -56,7 +68,9 @@ public class FloatingController : MonoBehaviour {
     {
         if (!selector.merged)
         {
+            rb.velocity = Vector3.zero;
             moveDirection = Vector3.Reflect(moveDirection, collision.contacts[0].normal);
+            rb.AddForce(moveDirection * moveSpeed * 100);
         }
     }
 
