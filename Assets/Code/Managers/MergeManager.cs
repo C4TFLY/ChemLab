@@ -6,11 +6,6 @@ public class MergeManager : MonoBehaviour {
     
     private int x;
 
-    public MergeManager()
-    {
-
-    }
-
     public void Merge(List<GameObject> selectedObjects)
     {
         if (selectedObjects.Count <= 1)
@@ -119,12 +114,15 @@ public class MergeManager : MonoBehaviour {
             }
 
         }
-        CollisionEnableDelay(.25f, children);
+        print("lul");
+        //Invoke("CollisionEnable", .25f);
+        StartCoroutine(CollisionEnable(children, .25f));
         selectedObjects.Clear();
     }
 
-    private IEnumerable CollisionEnableDelay(float delay, List<Transform> objects)
+    private IEnumerator CollisionEnable(List<Transform> objects, float delay = 1.0f)
     {
+        print("Running CollisionEnableDelay");
         yield return new WaitForSeconds(delay);
         foreach (Transform child in objects)
         {

@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour {
 
     private void Awake()
     {
-        mergeManager = new MergeManager();
+        mergeManager = GetComponent<MergeManager>();
     }
 
     public void Merge()
