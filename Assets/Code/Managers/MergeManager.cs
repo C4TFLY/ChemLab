@@ -75,31 +75,25 @@ public class MergeManager : MonoBehaviour {
 
         foreach(GameObject parent in selectedObjects)
         {
+            Bounds bounds = new Bounds(parent.transform.GetChild(0).position, Vector3.zero);
+
             for (int k = 0; k < parent.transform.childCount; k++)
             {
                 Transform child = parent.transform.GetChild(k);
-                children.Add(child);
                 Selector selector = child.GetComponent<Selector>();
+
+                children.Add(child);
                 selector.DeSelect();
                 selector.merged = false;
+
+                if (explode)
+                {
+                    bounds.Encapsulate(child.position);
+                }
             }
 
-            parent.transform.DetachChildren();
-            Destroy(parent);
-        }
-
-        if (explode)
-        {
-            foreach (GameObject parent in selectedObjects)
+            if (explode)
             {
-                Debug.Log("kaboom");
-
-                Bounds bounds = new Bounds(children[0].position, Vector3.zero);
-                for (int i = 0; i < children.Count; i++)
-                {
-                    bounds.Encapsulate(children[i].position);
-                }
-
                 Collider[] colliders = Physics.OverlapSphere(bounds.center, 10.0f);
                 foreach (Collider hit in colliders)
                 {
@@ -113,16 +107,16 @@ public class MergeManager : MonoBehaviour {
                 }
             }
 
+            parent.transform.DetachChildren();
+            Destroy(parent);
         }
-        print("lul");
-        //Invoke("CollisionEnable", .25f);
+
         StartCoroutine(CollisionEnable(children, .25f));
         selectedObjects.Clear();
     }
 
     private IEnumerator CollisionEnable(List<Transform> objects, float delay = 1.0f)
     {
-        print("Running CollisionEnableDelay");
         yield return new WaitForSeconds(delay);
         foreach (Transform child in objects)
         {
