@@ -17,6 +17,8 @@ public class MergeManager : MonoBehaviour {
         x++;
         float xSum = 0;
         float ySum = 0;
+        List<float> usedAngles = new List<float>();
+        float angleInterval = 50;
 
         for (int i = 0; i < selectedObjects.Count; i++)
         {
@@ -51,6 +53,19 @@ public class MergeManager : MonoBehaviour {
             float randomAngle = Random.Range(
                 0f,
                 360f);
+
+            float angle1;
+            float angle2;
+            angle1 = (randomAngle < angleInterval) ? 360 + (randomAngle - angleInterval) : randomAngle - angleInterval;
+            angle2 = (randomAngle > 360 - angleInterval) ? angleInterval - (360 - randomAngle) : randomAngle + angleInterval;
+            print("angle1: " + angle1);
+            print("angle2: " + angle2);
+            print("randomangle: " + randomAngle);
+            for (int k = 0; k < usedAngles.Count; k++)
+            {
+
+
+            }
 
             selectedObjects[i].transform.position = new Vector3(
                 newParent.transform.position.x + (Mathf.Cos(randomAngle)),
