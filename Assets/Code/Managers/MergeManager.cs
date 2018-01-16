@@ -21,7 +21,7 @@ public class MergeManager : MonoBehaviour {
         List<int> angles = new List<int>();
         for (int i = 0; i < 6; i++)
         {
-            angles.Add(60 * i);
+            angles.Add(50 * i);
         }
 
         for (int i = 0; i < selectedObjects.Count; i++)
@@ -57,7 +57,8 @@ public class MergeManager : MonoBehaviour {
             int angleListPos = Random.Range(0, angles.Count);
             int randomAngle = angles[angleListPos];
             angles.Remove(randomAngle);
-            print(randomAngle);
+
+            print(selectedObjects[i].name + ": " + randomAngle);
 
             selectedObjects[i].transform.position = new Vector3(
                 newParent.transform.position.x + (Mathf.Cos(randomAngle)),
