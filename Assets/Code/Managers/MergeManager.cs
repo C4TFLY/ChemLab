@@ -54,9 +54,9 @@ public class MergeManager : MonoBehaviour {
         {
             Selector selector = selectedObjects[i].GetComponent<Selector>();
 
-            int angleListPos = Random.Range(0, 6);
+            int angleListPos = Random.Range(0, angles.Count);
             int randomAngle = angles[angleListPos];
-            angles.Remove(angleListPos);
+            angles.Remove(randomAngle);
             print(randomAngle);
 
             selectedObjects[i].transform.position = new Vector3(
