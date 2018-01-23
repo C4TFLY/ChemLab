@@ -1,10 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SQLite4Unity3d;
 
 public class MergeManager : MonoBehaviour {
     
     private int x;
+    DBConnect dbc = new DBConnect();
+    SQLiteConnection conn;
+    SQLiteCommand cmd = new SQLiteCommand();
+
+    private void Awake()
+    {
+        //dataService = new DataService("test.db");
+    }
 
     public void Merge(List<GameObject> selectedObjects)
     {
@@ -144,5 +153,14 @@ public class MergeManager : MonoBehaviour {
             child.GetComponent<FloatingController>().slowDown = true;
         }
 
+    }
+
+    private void CheckMerge(List<GameObject> objects)
+    {
+        List<string> tags = new List<string>();
+        foreach (GameObject obj in objects)
+        {
+            tags.Add(obj.tag);
+        }
     }
 }
