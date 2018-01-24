@@ -1,19 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using SQLite4Unity3d;
 
 public class MergeManager : MonoBehaviour {
     
     private int x;
-    DBConnect dbc = new DBConnect();
-    SQLiteConnection conn;
-    SQLiteCommand cmd = new SQLiteCommand();
-
-    private void Awake()
-    {
-        //dataService = new DataService("test.db");
-    }
 
     public void Merge(List<GameObject> selectedObjects)
     {
@@ -25,7 +16,8 @@ public class MergeManager : MonoBehaviour {
         x++;
 
         //Create the parent for the merge
-        GameObject newParent = new GameObject($"Parent{x}");
+        //GameObject newParent = new GameObject($"Parent{x}");
+        GameObject newParent = new GameObject("Parent" + x);
 
         //For getting the average x and y values
         float xSum = 0;
