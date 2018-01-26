@@ -25,7 +25,7 @@ public class DBTest : MonoBehaviour {
             int neutrons = reader.GetInt32(2);
 
             //Debug.Log($"<b>Name:</b> {name}\n<b>Protons:</b> {protons}\n<b>Neutrons:</b> {neutrons}");
-            Debug.Log(String.Format("<b>Name:</b> {0}\n<b>Protons:</b> {1}\n<b>Neutrons:</b> {2}", name, protons, neutrons));
+            Debug.Log(String.Format("<b>Name:</b> {0}\n<b>Protons:</b> {1}<b>Neutrons:</b> {2}", name, protons, neutrons));
         }
 
         reader.Close();
