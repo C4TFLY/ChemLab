@@ -8,13 +8,13 @@ using System;
 public class DBTest : MonoBehaviour {
 
 	void Start () {
-        string conn = "URI=file:" + Application.dataPath + "/test.db";
+        string conn = "URI=file:" + Application.dataPath + "/Assets/Other/Combinations.db";
         IDbConnection dbconn;
-        dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn = new SqliteConnection(conn);
         dbconn.Open();
         IDbCommand dbcmd = dbconn.CreateCommand();
 
-        string sqlQuery = "SELECT name, protons, neutrons FROM test";
+        string sqlQuery = "SELECT atomName, protonAmount, neutronAmount FROM atoms";
         dbcmd.CommandText = sqlQuery;
         IDataReader reader = dbcmd.ExecuteReader();
 
