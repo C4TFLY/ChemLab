@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Data;
+using Mono.Data.Sqlite;
 
 public class MergeManager : MonoBehaviour {
     
@@ -149,10 +151,22 @@ public class MergeManager : MonoBehaviour {
 
     private void CheckMerge(List<GameObject> objects)
     {
-        List<string> tags = new List<string>();
-        foreach (GameObject obj in objects)
+        DBConnect dbc = new DBConnect();
+        IDbConnection conn = dbc.GetConnection();
+        int protons = 0;
+        int neutrons = 0;
+
+        foreach(GameObject obj in objects)
         {
-            tags.Add(obj.tag);
+            if (obj.tag == "Proton")
+            {
+                protons++;
+            }
+            else if (obj.tag == "Neutrons")
+            {
+                neutrons = 0;
+            }
         }
+
     }
 }

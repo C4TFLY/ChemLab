@@ -124,7 +124,6 @@ GameObject:
   - component: {fileID: 22906686}
   - component: {fileID: 22906688}
   - component: {fileID: 22906687}
-  - component: {fileID: 22906689}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -151,7 +150,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 22906685}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 210a78e255edc0a43b2c41f7144d5533, type: 3}
   m_Name: 
@@ -169,17 +168,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlinedShader: {fileID: 4800000, guid: 3c993b8e32f00ab4b8261542de2f6fec, type: 3}
   defaultShader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
---- !u!114 &22906689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 22906685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dd2f3b8ac2739343beebf6b1b8f1d72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &88405439
 Prefab:
   m_ObjectHideFlags: 0
