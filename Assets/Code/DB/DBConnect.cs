@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DBConnect {
 
-    IDbConnection conn;
+    SqliteConnection conn;
     string dbLocation;
 
     public DBConnect(string dbLocation = "/Other/Scraped.db")
@@ -13,8 +13,10 @@ public class DBConnect {
 
         try
         {
-            conn = new SqliteConnection();
-            conn.ConnectionString = $"URI=file:{Application.dataPath}{this.dbLocation}";
+            conn = new SqliteConnection
+            {
+                ConnectionString = $"URI=file:{Application.dataPath}{this.dbLocation}"
+            };
         }
         catch(SqliteException ex)
         {
@@ -22,7 +24,7 @@ public class DBConnect {
         }
     }
 
-    public IDbConnection GetConnection()
+    public SqliteConnection GetConnection()
     {
         return conn;
     }

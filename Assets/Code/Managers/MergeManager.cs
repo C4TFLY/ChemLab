@@ -79,6 +79,7 @@ public class MergeManager : MonoBehaviour {
             selector.merged = true;
         }
 
+        CheckMerge(selectedObjects);
         newParent.AddComponent<Selector>();
         selectedObjects.Clear();
     }
@@ -149,24 +150,56 @@ public class MergeManager : MonoBehaviour {
 
     }
 
-    private void CheckMerge(List<GameObject> objects)
+    private IEnumerator CheckMerge(List<GameObject> objects)
+    {
+
+    }
+
+    private void DatabaseCheck(List<GameObject> objects)
     {
         DBConnect dbc = new DBConnect();
-        IDbConnection conn = dbc.GetConnection();
-        int protons = 0;
-        int neutrons = 0;
+        SqliteConnection conn = dbc.GetConnection();
+        SqliteCommand cmd = new SqliteCommand();
 
-        foreach(GameObject obj in objects)
+        int protons = CountTags(objects, "Proton");
+        int neutrons = CountTags(objects, "Neutron");
+
+        try
         {
-            if (obj.tag == "Proton")
+            conn.Open();
+            cmd.Connection = conn;
+
+            cmd.CommandText = "SELECT * FROM Scraped WHERE protons = @protons AND neutrons = @neutrons";
+            cmd.Prepare();
+
+            cmd.Parameters.Add(new SqliteParameter("@protons", protons));
+            cmd.Parameters.Add(new SqliteParameter("@neutrons", neutrons));
+
+            SqliteDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
             {
-                protons++;
-            }
-            else if (obj.tag == "Neutrons")
-            {
-                neutrons = 0;
+                if (!reader.HasRows)
+                {
+                    //How do we return a success/failure?
+                    return
+                        asdasd
+                }
             }
         }
+        catch (SqliteException ex)
+        {
+            Debug.Log(ex);
+        }
+    }
 
+    private int CountTags(List<GameObject> objects, string tag)
+    {
+        int output = 0;
+        foreach (GameObject obj in objects)
+        {
+            output += (obj.tag == tag) ? 1 : 0;
+        }
+        return output;
     }
 }
