@@ -182,8 +182,8 @@ public class MergeManager : MonoBehaviour {
                 if (!reader.HasRows)
                 {
                     //How do we return a success/failure?
-                    return
-                        asdasd
+                    //Object?
+                    return;
                 }
             }
         }
