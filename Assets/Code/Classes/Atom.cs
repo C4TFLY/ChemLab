@@ -11,14 +11,23 @@ public class Atom
     private int neutrons;
     private int massNumber;
 
-    public Atom(string name, string isotope, string chemicalName, int protons, int neutrons, int massNumber)
+    public string Name
     {
-        this.name = name;
-        this.isotope = isotope;
-        this.chemicalName = chemicalName;
-        this.protons = protons;
-        this.neutrons = neutrons;
-        this.massNumber = massNumber;
-        asdasd
+        get
+        {
+            return name;
+        }
     }
+    asdasdas
+
+    //public Atom(string name, string isotope, string chemicalName, int protons, int neutrons, int massNumber)
+    //{
+    //    this.name = name;
+    //    this.isotope = isotope;
+    //    this.chemicalName = chemicalName;
+    //    this.protons = protons;
+    //    this.neutrons = neutrons;
+    //    this.massNumber = massNumber;
+    //    asdasd
+    //}
 }
