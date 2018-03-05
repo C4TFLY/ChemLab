@@ -12,21 +12,22 @@ public class Atom
     private int neutrons { get; }
     private int massNumber { get; }
 
-    public string Name
-    {
-        get
-        {
-            return name;
-        }
-    }
+    //public string Name
+    //{
+    //    get
+    //    {
+    //        return name;
+    //    }
+    //}
 
     public Atom(bool valid)
     {
         this.valid = valid;
     }
 
-    public Atom(string name, string isotope, string chemicalName, int protons, int neutrons, int massNumber)
+    public Atom(bool valid, string name, string isotope, string chemicalName, int protons, int neutrons, int massNumber)
     {
+        this.valid = valid;
         this.name = name;
         this.isotope = isotope;
         this.chemicalName = chemicalName;

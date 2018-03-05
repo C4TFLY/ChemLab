@@ -155,7 +155,7 @@ public class MergeManager : MonoBehaviour {
 
     }
 
-    private void DatabaseCheck(List<GameObject> objects)
+    private Atom DatabaseCheck(List<GameObject> objects)
     {
         DBConnect dbc = new DBConnect();
         SqliteConnection conn = dbc.GetConnection();
@@ -163,6 +163,13 @@ public class MergeManager : MonoBehaviour {
 
         int protons = CountTags(objects, "Proton");
         int neutrons = CountTags(objects, "Neutron");
+
+        string dbName = null;
+        string dbIsotope = null;
+        string dbChemicalName = null;
+        int dbProtons = 0;
+        int dbNeutrons = 0;
+        int dbMassNumber = 0;
 
         try
         {
@@ -181,15 +188,26 @@ public class MergeManager : MonoBehaviour {
             {
                 if (!reader.HasRows)
                 {
-                    //How do we return a success/failure?
-                    //Object?
-                    return;
+                    return new Atom(false);
                 }
+
+                dbName = reader.GetString(0);
+                dbIsotope = reader.GetString(1);
+                dbChemicalName = reader.GetString(2);
+                dbProtons = reader.GetInt32(3);
+                dbNeutrons = reader.GetInt32(4);
+                dbMassNumber = reader.GetInt32(5);
             }
+            return new Atom(true, dbName, dbIsotope, dbChemicalName, dbProtons, dbNeutrons, dbMassNumber);
         }
         catch (SqliteException ex)
         {
             Debug.Log(ex);
+            return new Atom(false);
+        }
+        finally
+        {
+            conn.Close();
         }
     }
 
