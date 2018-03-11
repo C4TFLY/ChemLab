@@ -18,8 +18,8 @@ public class MergeManager : MonoBehaviour {
         x++;
 
         //Create the parent for the merge
-        //GameObject newParent = new GameObject($"Parent{x}");
-        GameObject newParent = new GameObject("Parent" + x);
+        GameObject newParent = new GameObject($"Parent{x}");
+        StartCoroutine(CheckMerge(selectedObjects, newParent));
 
         //For getting the average x and y values
         float xSum = 0;
@@ -79,60 +79,50 @@ public class MergeManager : MonoBehaviour {
             selector.merged = true;
         }
 
-        CheckMerge(selectedObjects);
         newParent.AddComponent<Selector>();
-        selectedObjects.Clear();
     }
 
-    public void Separate(List<GameObject> selectedObjects, bool explode = false)
+    public void Separate(GameObject parent, bool explode = false)
     {
         List<Transform> children = new List<Transform>();
-        if (selectedObjects.Count < 1)
+        if (parent.transform.childCount == 0)
         {
+            parent.GetComponent<Selector>().DeSelect();
             return;
         }
+        Bounds bounds = new Bounds(parent.transform.GetChild(0).position, Vector3.zero);
 
-        foreach(GameObject parent in selectedObjects)
+        for (int k = 0; k < parent.transform.childCount; k++)
         {
-            if (parent.transform.childCount == 0)
+            Transform child = parent.transform.GetChild(k);
+            Selector selector = child.GetComponent<Selector>();
+
+            children.Add(child);
+            selector.DeSelect();
+            selector.merged = false;
+            bounds.Encapsulate(child.position);
+
+            if (explode)
             {
-                parent.GetComponent<Selector>().DeSelect();
-                return;
-            }
-            Bounds bounds = new Bounds(parent.transform.GetChild(0).position, Vector3.zero);
-
-            for (int k = 0; k < parent.transform.childCount; k++)
-            {
-                Transform child = parent.transform.GetChild(k);
-                Selector selector = child.GetComponent<Selector>();
-
-                children.Add(child);
-                selector.DeSelect();
-                selector.merged = false;
-                bounds.Encapsulate(child.position);
-
-                if (explode)
+                Collider[] colliders = Physics.OverlapSphere(bounds.center, 10.0f);
+                foreach (Collider hit in colliders)
                 {
-                    Collider[] colliders = Physics.OverlapSphere(bounds.center, 10.0f);
-                    foreach (Collider hit in colliders)
-                    {
-                        Rigidbody rb = hit.GetComponent<Rigidbody>();
+                    Rigidbody rb = hit.GetComponent<Rigidbody>();
 
-                        if (rb != null)
-                        {
-                            rb.AddExplosionForce(500f, bounds.center, 10.0f);
-                            rb.drag = 1;
-                        }
+                    if (rb != null)
+                    {
+                        rb.AddExplosionForce(500f, bounds.center, 10.0f);
+                        rb.drag = 1;
                     }
                 }
             }
-
-            parent.transform.DetachChildren();
-            Destroy(parent);
         }
 
+        parent.transform.DetachChildren();
+        Destroy(parent);
+        ObjectManager.selectedObjects.Clear();
+
         StartCoroutine(CollisionEnable(children, .25f));
-        selectedObjects.Clear();
     }
 
     private IEnumerator CollisionEnable(List<Transform> objects, float delay = 1.0f)
@@ -150,9 +140,21 @@ public class MergeManager : MonoBehaviour {
 
     }
 
-    private IEnumerator CheckMerge(List<GameObject> objects)
+    private IEnumerator CheckMerge(List<GameObject> selectedObjects, GameObject parent)
     {
-
+        Atom atom = DatabaseCheck(selectedObjects);
+        yield return new WaitForSeconds(2);
+        if (atom.valid)
+        {
+            print("BOOPS");
+            parent.AddComponent<AtomManager>().atom = atom;
+            selectedObjects.Clear();
+        }
+        else
+        {
+            print("NOPE");
+            Separate(parent, true);
+        }
     }
 
     private Atom DatabaseCheck(List<GameObject> objects)
@@ -184,13 +186,14 @@ public class MergeManager : MonoBehaviour {
 
             SqliteDataReader reader = cmd.ExecuteReader();
 
+            if (!reader.HasRows)
+            {
+                print("no rows");
+                return new Atom(false);
+            }
+
             while (reader.Read())
             {
-                if (!reader.HasRows)
-                {
-                    return new Atom(false);
-                }
-
                 dbName = reader.GetString(0);
                 dbIsotope = reader.GetString(1);
                 dbChemicalName = reader.GetString(2);
@@ -198,6 +201,7 @@ public class MergeManager : MonoBehaviour {
                 dbNeutrons = reader.GetInt32(4);
                 dbMassNumber = reader.GetInt32(5);
             }
+            
             return new Atom(true, dbName, dbIsotope, dbChemicalName, dbProtons, dbNeutrons, dbMassNumber);
         }
         catch (SqliteException ex)

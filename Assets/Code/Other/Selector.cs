@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Selector : MonoBehaviour
 {
-    [HideInInspector] public bool selected = false;
+    /*[HideInInspector] */public bool selected = false;
     public bool merged = false;
     public Shader outlinedShader;
     public Shader defaultShader;
@@ -28,11 +28,11 @@ public class Selector : MonoBehaviour
         {
             if (merged)
             {
-                GroupDeSelect();
+                GroupDeSelect(true);
             }
             else
             {
-                DeSelect();
+                DeSelect(true);
             }
         }
     }
@@ -47,10 +47,13 @@ public class Selector : MonoBehaviour
     /// <summary>
     /// Deselect the GameObject
     /// </summary>
-    public void DeSelect()
+    public void DeSelect(bool removeFromList = false)
     {
         selected = false;
         UpdateShader(gameObject, ManagerStorage.DefaultShader);
+
+        if (removeFromList)
+            ObjectManager.selectedObjects.Remove(gameObject);
     }
 
     public void GroupSelect()
@@ -64,9 +67,13 @@ public class Selector : MonoBehaviour
         }
     }
 
-    public void GroupDeSelect()
+    public void GroupDeSelect(bool removeFromList = false)
     {
         Transform parent = transform.parent;
+
+        if (removeFromList)
+            ObjectManager.selectedObjects.Remove(parent.gameObject);
+
         foreach (Transform child in parent)
         {
             child.gameObject.GetComponent<Selector>().selected = false;

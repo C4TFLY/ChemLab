@@ -638,7 +638,7 @@ PlayerSettings:
   cloudServicesEnabled:
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: 31275c0e-2384-455b-8df4-116d2a487b29
   projectName: ChemLab
   organizationId: c4t-fly

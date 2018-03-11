@@ -18,6 +18,10 @@ public class UIManager : MonoBehaviour {
 
     public void Separate()
     {
-        mergeManager.Separate(ObjectManager.selectedObjects, true);
+        foreach (GameObject parent in ObjectManager.selectedObjects)
+        {
+            mergeManager.Separate(parent, true);
+        }
+
     }
 }
